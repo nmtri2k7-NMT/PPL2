@@ -237,6 +237,8 @@ Position FindById(Node pl, string id){
     return pl;
 }
 
+
+
 bool Remove(Node pl, Position p){
     if (p == NULL || p == pl)   return false;
 
