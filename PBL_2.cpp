@@ -1,11 +1,7 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
-#include <algorithm>
 
 using namespace std;
-
-class Shoe;
 
 struct NodeInfo;
 
@@ -53,47 +49,39 @@ Shoe::Shoe(const Shoe &s)
 Shoe::~Shoe()
 { }
 
-void Shoe::Add() {
+void Shoe::Add(){
     cout << "Nhap ma giay: ";
     getline(cin, Id);
-
     cout << "Nhap ten giay: ";
     getline(cin, Name);
-
     cout << "Nhap ten hang san xuat: ";
     getline(cin, Brand);
-
     cout << "Nhap doi tuong nguoi dung: ";
     getline(cin, Target);
-
     cout << "Nhap kich co giay: ";
     cin >> Size;
     cin.ignore();
-
     cout << "Nhap mau sac: ";
     getline(cin, Color);
-
     cout << "Nhap chat lieu giay: ";
     getline(cin, Material);
-
     cout << "Nhap gia ban: ";
     cin >> Price;
-
     cout << "Nhap so luong giay: ";
     cin >> Count;
     cin.ignore();
 }
 
 void Shoe::Out() const {
-    cout << "Ma giay: "             << Id << endl;
-    cout << "Ten giay: "            << Name << endl;
-    cout << "Hang san xuat: "       << Brand << endl;
-    cout << "Doi tuong: "           << Target << endl;
-    cout << "Kich co: "             << Size << endl;
-    cout << "Mau sac: "             << Color << endl;
-    cout << "Chat lieu: "           << Material << endl;
-    cout << "Gia ban: "             << Price << " VND" << endl;
-    cout << "So luong hien tai: "   << Count << endl;
+    cout << "Ma giay: " << Id << endl;
+    cout << "Ten giay: " << Name << endl;
+    cout << "Hang san xuat: " << Brand << endl;
+    cout << "Doi tuong: " << Target << endl;
+    cout << "Kich co: " << Size << endl;
+    cout << "Mau sac: " << Color << endl;
+    cout << "Chat lieu: " << Material << endl;
+    cout << "Gia ban: " << Price << "VND" << endl;
+    cout << "So luong hien tai: " << Count << endl;
 }
 
 class SportShoe : public Shoe{
@@ -127,12 +115,11 @@ SportShoe::SportShoe(const SportShoe &s)
 SportShoe::~SportShoe()
 { }
 
-void SportShoe::Add() {
+void SportShoe::Add(){
     Shoe::Add();
 
     cout << "Nhap mon the thao: ";
     getline(cin, Sport);
-
     cout << "Nhap loai dem: ";
     getline(cin, Cushion);
 }
@@ -144,7 +131,7 @@ void SportShoe::Out() const {
     cout << "Loai dem:" << Cushion << endl;
 }
 
-class DressShoe : public Shoe {
+class DressShoe : public Shoe{
     private:
         string Leather;
         string Style;
@@ -174,12 +161,11 @@ DressShoe::DressShoe(const DressShoe &s)
 DressShoe::~DressShoe() 
 { }
 
-void DressShoe::Add() {
+void DressShoe::Add(){
     Shoe::Add();
 
     cout << "Nhap loai da: ";
     getline(cin, Leather);
-
     cout << "Nhap kieu dang: ";
     getline(cin, Style);
 }
@@ -202,8 +188,10 @@ typedef struct NodeInfo *Position;
 
 Node Create(){
     Node pl = new NodeInfo;
+
     pl->Next = NULL;
     pl->Prev = NULL;
+
     return pl;
 }
 
@@ -211,7 +199,6 @@ bool Insert(Node pl, Shoe *info, Position p){
     Node newNode = new NodeInfo;
 
     if(newNode == NULL) return false;
-
     if(p == NULL)   p = pl;
 
     newNode->Info = info;
@@ -245,7 +232,6 @@ Position FindById(Node pl, string id){
     pl = pl->Next;
 
     if(pl == NULL)  return NULL;
-
     while(pl != NULL && pl->Info->Id != id) pl = pl->Next;
 
     return pl;
@@ -255,7 +241,6 @@ bool Remove(Node pl, Position p){
     if (p == NULL || p == pl)   return false;
 
     p->Prev->Next = p->Next;
-
     if (p->Next != NULL)    p->Next->Prev = p->Prev;
 
     delete p->Info;
@@ -266,19 +251,24 @@ bool Remove(Node pl, Position p){
 
 bool Update(Node pl, Shoe *info, Position p){
     if(p == NULL || p == pl) return false;
-
     p->Info = info;
+
     return true;
 }
 
 bool ClearList(Node pl){
-    pl = pl->Next;
-    if(pl == NULL)   return false;
+    if (pl == NULL || pl->Next == NULL) return false;
 
-    while(pl != NULL){
-        delete pl->Info;
-        pl = pl->Next;
+    Position p = pl->Next;
+
+    while (p != NULL){
+        Position t = p;
+        p = p->Next;
+        delete t->Info;
+        delete t;
     }
+    pl->Next = NULL;
+
     return true;
 }
 
@@ -288,9 +278,25 @@ int main(){
     cout << "||                           TRUONG DAI HOC BACH KHOA - DAI HOC DA NANG                           ||" << endl;
     cout << "||                                    KHOA CONG NGHE THONG TIN                                    ||" << endl;
     cout << "||                                                                                                ||" << endl;
+    cout << "||------------------------------------------------------------------------------------------------||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||                                  PBL 2: DU AN CO SO LAP TRINH                                  ||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||                                DE TAI: UNG DUNG QUAN LY BAN GIAY                               ||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||------------------------------------------------------------------------------------------------||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||                                      GIANG VIEN HUONG DAN:                                     ||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||                                     ThS. Nguyen Van Nguyen                                     ||" << endl;
+    cout << "||                                      TS. Nguyen Van Hieu                                       ||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||                                                                                                ||" << endl;
-
+    cout << "||                                      SINH VIEN THUC HIEN:                                      ||" << endl;
+    cout << "||                                                                                                ||" << endl;
+    cout << "||                 Le Nguyen Hoang Viet       Lop: 25T_DT2         MSSV: 102250102                ||" << endl;
+    cout << "||                 Nguyen Minh Tri            Lop: 25T_KHDL        MSSV: 102250375                ||" << endl;
+    cout << "====================================================================================================" << endl;
 
     system("pause");
     return 0;
