@@ -552,7 +552,7 @@ void ShowList(Node pl, int c){
 void DocFile(Node pl, string filename){
     ifstream f(filename);
     if(!f.is_open()){
-        cout << ">> Loi: Khong tim thay file " << filename << "!" << endl;
+        cout << ">> Loi: Khong tim thay file " << filename << "!" << endl << endl;
         return;
     }
 
@@ -650,7 +650,7 @@ void DocFile(Node pl, string filename){
 void SaveFile(Node pl, string filename){
     ofstream f(filename);
     if(!f.is_open()){
-        cout << ">> Loi: Khong mo duoc file de ghi!" << endl;
+        cout << ">> Loi: Khong mo duoc file de luu!" << endl << endl;
         return;
     }
 
@@ -665,79 +665,79 @@ void SaveFile(Node pl, string filename){
 }
 
 int main(){
-    TextColor(15);
+    //TextColor(15);
     cout << "====================================================================================================" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                           TRUONG DAI HOC BACH KHOA - DAI HOC DA NANG                           ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                    KHOA CONG NGHE THONG TIN                                    ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||------------------------------------------------------------------------------------------------||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                  PBL 2: DU AN CO SO LAP TRINH                                  ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                DE TAI: UNG DUNG QUAN LY BAN GIAY                               ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||------------------------------------------------------------------------------------------------||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                      GIANG VIEN HUONG DAN:                                     ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                     ThS. Nguyen Van Nguyen                                     ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                      TS. Nguyen Van Hieu                                       ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                                      SINH VIEN THUC HIEN:                                      ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                 Le Nguyen Hoang Viet       Lop: 25T_DT2         MSSV: 102250102                ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    TextColor(10);
+    //TextColor(10);
     cout << "                 Nguyen Minh Tri            Lop: 25T_KHDL        MSSV: 102250375                ";
-    TextColor(15);
+    //TextColor(15);
     cout << "||" << endl;
     cout << "====================================================================================================" << endl << endl;
 
     Node ShoeList = Create();
 
-    TextColor(11);
+    //TextColor(11);
     cout << "===== Ung dung quan ly ban giay =====" << endl << endl;
         
     while(1){
-        cout << "1. Them san pham moi." << endl;
+        cout << "\n1. Them san pham moi." << endl;
         cout << "2. Hien thi toan bo san pham." << endl;
         cout << "3. Tim kiem san pham." << endl;
         cout << "4. Cap nhat thong tin san pham." << endl;
@@ -801,7 +801,7 @@ int main(){
                     }
 
                     else{
-                        cout << "Lua chon khong hop le! Vui long nhap lai." << endl;
+                        cout << "Lua chon khong hop le! Vui long nhap lai." << endl << endl;
                         break;
                     }
 
@@ -814,7 +814,7 @@ int main(){
 
                     else{
                         Insert(ShoeList, s, nullptr);
-                        cout << ">> Them san pham moi thanh cong!" << endl;
+                        cout << ">> Them san pham moi thanh cong!" << endl << endl;
                     }
 
                     break;
@@ -839,6 +839,21 @@ int main(){
                 }
 
                 ShowList(ShoeList, c);
+                
+                cout << "0. Quay lai menu." << endl << endl;
+                cout << ">> ";
+
+                int c1;
+                cin >> c1;
+                cin.ignore();
+
+                if(c1 == 0){
+                    break;
+                }
+
+                else{
+                    cout << "Lua chon khong hop le! Vui long nhap lai." << endl;
+                }
 
                 break;
             }
