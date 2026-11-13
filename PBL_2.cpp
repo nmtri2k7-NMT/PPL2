@@ -27,7 +27,6 @@ class Shoe{
     public:
         Shoe();
         Shoe(string id, string name, string brand, int size, string color, long long price, int count);
-        Shoe(const Shoe &s);
 
         virtual ~Shoe();
 
@@ -36,10 +35,13 @@ class Shoe{
 
         string GetId() const;
         string GetName() const;
-        long long GetPrice() const;
-        int virtual GetType();
-        int GetCount() const;
+        int virtual GetType() = 0;
 
+        void SetId(string id);
+        void SetName(string name);
+        void SetBrand(string brand);
+        void SetSize(int size);
+        void SetColor(string color);
         void SetPrice(long long price);
         void SetCount(int count);
 
@@ -57,17 +59,13 @@ Shoe::Shoe(string id, string name, string brand, int size, string color, long lo
     : Id(id), Name(name), Brand(brand), Size(size), Color(color), Price(price), Count(count)
 { }
 
-Shoe::Shoe(const Shoe &s)
-    : Id(s.Id), Name(s.Name), Brand(s.Brand), Size(s.Size), Color(s.Color), Price(s.Price), Count(s.Count)
-{ }
-
 Shoe::~Shoe()
 { }
 
 void Shoe::Add(){
-    cout << "Nhap ma giay: ";
+    cout << "\nNhap ma san pham: ";
     getline(cin, Id);
-    cout << "Nhap ten giay: ";
+    cout << "Nhap ten san pham: ";
     getline(cin, Name);
     cout << "Nhap ten hang san xuat: ";
     getline(cin, Brand);
@@ -76,22 +74,14 @@ void Shoe::Add(){
     cin.ignore();
     cout << "Nhap mau sac: ";
     getline(cin, Color);
-    cout << "Nhap gia ban: ";
-    cin >> Price;
-    cout << "Nhap so luong giay: ";
-    cin >> Count;
-    cin.ignore();
 }
 
 void Shoe::Out() const {
-    cout << "Ma giay: " << Id << endl;
-    cout << "Ten giay: " << Name << endl;
+    cout << "\nMa san pham: " << Id << endl;
+    cout << "Ten san pham: " << Name << endl;
     cout << "Hang san xuat: " << Brand << endl;
     cout << "Kich co: " << Size << endl;
     cout << "Mau sac: " << Color << endl;
-    cout << "Gia ban: " << Price << "VND" << endl;
-    cout << "So luong hien tai: " << Count << endl;
-    cout << "--------------------------------------------------" << endl;
 }
 
 string Shoe::GetId() const {
@@ -102,8 +92,24 @@ string Shoe::GetName() const {
     return Name;
 }
 
-long long Shoe::GetPrice() const {
-    return Price;
+void Shoe::SetId(string id){
+    Id = id;
+}
+
+void Shoe::SetName(string name){
+    Name = name;
+}
+
+void Shoe::SetBrand(string brand){
+    Brand = brand;
+}
+
+void Shoe::SetSize(int size){
+    Size = size;
+}
+
+void Shoe::SetColor(string color){
+    Color = color;
 }
 
 void Shoe::SetPrice(long long price){
@@ -112,14 +118,6 @@ void Shoe::SetPrice(long long price){
 
 void Shoe::SetCount(int count){
     Count = count;
-}
-
-int Shoe::GetType(){
-    return 0;
-}
-
-int Shoe::GetCount() const {
-    return Count;
 }
 
 bool Shoe::operator <= (const Shoe &s){
@@ -131,8 +129,8 @@ bool Shoe::operator >= (const Shoe &s){
 }
 
 void Shoe::Write(ofstream &f) const {
-    f << "Ma giay: " << Id << endl;
-    f << "Ten giay: " << Name << endl;
+    f << "Ma san pham: " << Id << endl;
+    f << "Ten san pham: " << Name << endl;
     f << "Hang san xuat: " << Brand << endl;
     f << "Kich co: " << Size << endl;
     f << "Mau sac: " << Color << endl;
@@ -146,7 +144,6 @@ class SportShoe : public Shoe{
     public:
         SportShoe();
         SportShoe(string id, string name, string brand, int size, string color, long long price, int count, string sport, string cushion);
-        SportShoe(const SportShoe &s);
 
         ~SportShoe();
 
@@ -154,6 +151,9 @@ class SportShoe : public Shoe{
         void Out() const;
 
         int GetType();
+
+        void SetSport(string sport);
+        void SetCushion(string cushion);
 
         void Write(ofstream &f) const;
 };
@@ -166,10 +166,6 @@ SportShoe::SportShoe(string id, string name, string brand, int size, string colo
     : Shoe(id, name, brand, size, color, price, count), Sport(sport), Cushion(cushion)
 { }
 
-SportShoe::SportShoe(const SportShoe &s) 
-    : Shoe(s), Sport(s.Sport), Cushion(s.Cushion)
-{ }
-
 SportShoe::~SportShoe()
 { }
 
@@ -178,27 +174,43 @@ void SportShoe::Add(){
 
     cout << "Nhap mon the thao: ";
     getline(cin, Sport);
-    cout << "Nhap loai dem: ";
+    cout << "Nhap cong nghe dem: ";
     getline(cin, Cushion);
+    cout << "Nhap don gia: ";
+    cin >> Price;
+    cout << "Nhap so luong giay: ";
+    cin >> Count;
+    cin.ignore();
 }
 
 void SportShoe::Out() const {
     Shoe::Out();
 
     cout << "Mon the thao: " << Sport << endl;
-    cout << "Loai dem: " << Cushion << endl;
+    cout << "Cong nghe dem: " << Cushion << endl;
+    cout << "Don gia: " << Price << " VND" << endl;
+    cout << "So luong hien tai: " << Count << endl;
+    cout << "--------------------------------------------------" << endl;
 }
 
 int SportShoe::GetType(){
     return 1;
 }
 
+void SportShoe::SetSport(string sport){
+    Sport = sport;
+}
+
+void SportShoe::SetCushion(string cushion){
+    Cushion = cushion;
+}
+
 void SportShoe::Write(ofstream &f) const {
     f << "#SPORTSHOE" << endl;
     Shoe::Write(f);
     f << "Mon the thao: " << Sport << endl;
-    f << "Loai dem: " << Cushion << endl;
-    f << "Gia ban: " << Price << endl;
+    f << "Cong nghe dem: " << Cushion << endl;
+    f << "Don gia: " << Price << endl;
     f << "So luong: " << Count << endl;
     f << "--------------------------------------------------" << endl;
 }
@@ -211,12 +223,16 @@ class DressShoe : public Shoe{
     public:
         DressShoe();
         DressShoe(string id, string name, string brand, int size, string color, long long price, int count, string leather, string style);
-        DressShoe(const DressShoe &s);
+
         ~DressShoe();
 
         void Add();
         void Out() const;
+
         int GetType();
+
+        void SetLeather(string leather);
+        void SetStyle(string style);
 
         void Write(ofstream &f) const;
 };
@@ -229,39 +245,51 @@ DressShoe::DressShoe(string id, string name, string brand, int size, string colo
     : Shoe(id, name, brand, size, color, price, count), Leather(leather), Style(style) 
 { }
 
-DressShoe::DressShoe(const DressShoe &s) 
-    : Shoe(s), Leather(s.Leather), Style(s.Style) 
-{ }
-
 DressShoe::~DressShoe() 
 { }
 
 void DressShoe::Add(){
     Shoe::Add();
 
-    cout << "Nhap loai da: ";
+    cout << "Nhap chat lieu da: ";
     getline(cin, Leather);
     cout << "Nhap kieu dang: ";
     getline(cin, Style);
+    cout << "Nhap don gia: ";
+    cin >> Price;
+    cout << "Nhap so luong giay: ";
+    cin >> Count;
+    cin.ignore();
 }
 
 void DressShoe::Out() const {
     Shoe::Out();
 
-    cout << "Loai da: " << Leather << endl;
+    cout << "Chat lieu da: " << Leather << endl;
     cout << "Kieu dang: " << Style << endl;
+    cout << "Don gia: " << Price << " VND" << endl;
+    cout << "So luong hien tai: " << Count << endl;
+    cout << "--------------------------------------------------" << endl;
 }
 
 int DressShoe::GetType(){
     return 2;
 }
 
+void DressShoe::SetLeather(string leather){
+    Leather = leather;
+}
+
+void DressShoe::SetStyle(string style){
+    Style = style;
+}
+
 void DressShoe::Write(ofstream &f) const {
     f << "#DRESSSHOE" << endl;
     Shoe::Write(f);
-    f << "Loai da: " << Leather << endl;
+    f << "Chat lieu da: " << Leather << endl;
     f << "Kieu dang: " << Style << endl;
-    f << "Gia ban: " << Price << endl;
+    f << "Don gia: " << Price << endl;
     f << "So luong: " << Count << endl;
     f << "--------------------------------------------------" << endl;
 }
@@ -310,23 +338,18 @@ Position FindById(Node pl, string id){
 void FindByName(Node pl, string name){
     pl = pl->Next;
 
-    if(pl == nullptr){
-        cout << "Danh sach dang trong, vui long them thong tin san pham!" << endl;
-        return;
-    }
-
-    int count = 0;
+    bool check = 0;
     while(pl != nullptr){
         if(pl->Info->GetName() == name){
             pl->Info->Out();
-            count++;
+            check = 1;
         }
 
         pl = pl->Next;
     }
 
-    if(count == 0){
-        cout << "Khong tim thay san pham co ten " << name << "!" << endl;
+    if(check == 0){
+        cout << ">> Khong tim thay san pham co ten " << name << "!" << endl;
     }
 }
 
@@ -342,34 +365,115 @@ bool Remove(Node pl, Position p){
     return true;
 }
 
-bool Update(Position p, int c){
+bool Update(Node pl, Position p, char c){
     if(p == nullptr)    return false;
-    
-    if(c == 1){
-        long long price;
 
-        cout << "Nhap gia san pham moi: ";
+    if(c == '1'){
+        string id;
+        cout << "\nNhap ma san pham moi: ";
+        getline(cin, id);
+
+        if(id != p->Info->GetId() && FindById(pl, id) != nullptr){
+            cout << "\n>> Loi: Ma giay " << id << " da ton tai!" << endl;
+            return false;
+        }
+
+        p->Info->SetId(id);
+    }
+
+    else if(c == '2'){
+        string name;
+        cout << "\nNhap ten san pham moi: ";
+        getline(cin, name);
+
+        p->Info->SetName(name);
+    }
+
+    else if(c == '3'){
+        string brand;
+        cout << "\nNhap ten hang san xuat moi: ";
+        getline(cin, brand);
+
+        p->Info->SetBrand(brand);
+    }
+
+    else if(c == '4'){
+        int size;
+        cout << "\nNhap kich co giay moi: ";
+        cin >> size;
+        cin.ignore(100, '\n');
+
+        p->Info->SetSize(size);
+    }
+
+    else if(c == '5'){
+        string color;
+        cout << "\nNhap mau sac moi: ";
+        getline(cin, color);
+
+        p->Info->SetColor(color);
+    }
+
+    else if(c == '6'){
+        long long price;
+        cout << "\nNhap gia san pham moi: ";
         cin >> price;
-        cin.ignore();
+        cin.ignore(100, '\n');
 
         p->Info->SetPrice(price);
     }
 
-    else if(c == 2){
+    else if(c == '7'){
         int count;
-
-        cout << "Nhap so luong san pham moi: ";
+        cout << "\nNhap so luong san pham moi: ";
         cin >> count;
-        cin.ignore();
+        cin.ignore(100, '\n');
 
         p->Info->SetCount(count);
     }
 
+    else if(c == '8'){
+        if(p->Info->GetType() == 1){
+            string sport;
+            cout << "\nNhap mon the thao moi: ";
+            getline(cin, sport);
+
+            ((SportShoe*)p->Info)->SetSport(sport);
+        }
+
+        else if(p->Info->GetType() == 2){
+            string leather;
+            cout << "\nNhap chat lieu da moi: ";
+            getline(cin, leather);
+
+            ((DressShoe*)p->Info)->SetLeather(leather);
+        }
+    }
+
+    else if(c == '9'){
+        if(p->Info->GetType() == 1){
+            string cushion;
+            cout << "\nNhap cong nghe dem moi: ";
+            getline(cin, cushion);
+
+            ((SportShoe*)p->Info)->SetCushion(cushion);
+        }
+
+        else if(p->Info->GetType() == 2){
+            string style;
+            cout << "\nNhap kieu dang moi: ";
+            getline(cin, style);
+
+            ((DressShoe*)p->Info)->SetStyle(style);
+        }
+    }
+
     else{
-        cout << "Lua chon khong hop le!" << endl;
+        cout << "\n>> Lua chon khong hop le! Vui long nhap lai." << endl;
         return false;
     }
 
+    cout << "\n>> Cap nhat thong tin thanh cong!" << endl;
     return true;
 }
 
@@ -417,15 +521,8 @@ bool Giam(Node Left, Node Right){
     return *(Left->Info) >= *(Right->Info);
 }
 
-Node MergeSort(Node pl, bool(*Compare)(Node , Node)){
-    if(pl == nullptr || pl->Next == nullptr)    return pl;
-
-    Node Left = nullptr;
-    Node Right = nullptr;
-
-    ChiaDoi(pl, Left, Right);
-    Left = MergeSort(Left, Compare);
-    Right = MergeSort(Right, Compare);
+Node Merge(Node Left, Node Right, bool(*Compare)(Node, Node)){
+    Node pl = nullptr;
 
     if(Compare(Left, Right)){
         pl = Left;
@@ -439,7 +536,7 @@ Node MergeSort(Node pl, bool(*Compare)(Node , Node)){
 
     pl->Prev = nullptr;
     Position p = pl;
-    while(Left != nullptr  && Right != nullptr){
+    while(Left != nullptr && Right != nullptr){
         if(Compare(Left, Right)){
             p->Next = Left;
             Left->Prev = p;
@@ -468,92 +565,46 @@ Node MergeSort(Node pl, bool(*Compare)(Node , Node)){
     return pl;
 }
 
-void ShowList(Node pl, int c){
-    if(pl->Next == nullptr){
-        cout << "Danh sach dang trong, vui long them thong tin san pham!" << endl;
-        return;
-    }
+Node MergeSort(Node pl, bool(*Compare)(Node , Node)){
+    if(pl == nullptr || pl->Next == nullptr)    return pl;
 
-    if(c == 1){
+    Node Left = nullptr;
+    Node Right = nullptr;
+
+    ChiaDoi(pl, Left, Right);
+    Left = MergeSort(Left, Compare);
+    Right = MergeSort(Right, Compare);
+
+    pl = Merge(Left, Right, Compare);
+
+    return pl;
+}
+
+void ShowList(Node pl, char c = '1'){
         pl = pl->Next;
         int i = 1;
 
         while(pl != nullptr){
-            cout << i << ". ";
-            pl->Info->Out();
-            pl = pl->Next;
-            i++;
-        }
-    }
-
-    else if(c == 2){
-        pl->Next = MergeSort(pl->Next, Giam);
-        pl->Next->Prev = pl;
-        Position p = pl->Next;
-
-        int i = 1;
-        while(p != nullptr){
-            cout << i << ". ";
-            p->Info->Out();
-            p = p->Next;
-            i++;
-        }
-    }
-
-    else if(c == 3){
-        pl->Next = MergeSort(pl->Next, Tang);
-        pl->Next->Prev = pl;
-        Position p = pl->Next;
-
-        int i = 1;
-        while(p != nullptr){
-            cout << i << ". ";
-            p->Info->Out();
-            p = p->Next;
-            i++;
-        }
-    }
-
-    else if(c == 4){
-        pl = pl->Next;
-        int i = 1;
-
-        while(pl != nullptr){
-            if(pl->Info->GetType() == 1){
+            if((c != '4' && c != '5') || (c == '4' && pl->Info->GetType() == 1) || (c == '5' && pl->Info->GetType() == 2)){
                 cout << i << ". ";
+
                 pl->Info->Out();
                 i++;
             }
 
             pl = pl->Next;
-        }
-    }
 
-    else if(c == 5){
-        pl = pl->Next;
-        int i = 1;
-
-        while(pl != nullptr){
-            if(pl->Info->GetType() == 2){
-                cout << i << ". ";
-                pl->Info->Out();
-                i++;
+       if(i == 1){
+                cout << "\n>> Khong tim thay san pham!" << endl;
             }
-
-            pl = pl->Next;
-        }
-    }
-
-    else{
-        cout << "Lua chon khong hop le!" << endl;
     }
 }
 
-void DocFile(Node pl, string filename){
+bool DocFile(Node pl, string filename){
     ifstream f(filename);
     if(!f.is_open()){
-        cout << ">> Loi: Khong tim thay file " << filename << "!" << endl << endl;
-        return;
+        cout << ">> Loi: Khong tim thay file " << filename << "!" << endl;
+        return false;
     }
 
     string line;
@@ -644,13 +695,14 @@ void DocFile(Node pl, string filename){
     }
 
     f.close();
-    cout << ">> Doc du lieu tu file " << filename << " thanh cong!\n" << endl;
+    cout << ">> Doc du lieu tu file " << filename << " thanh cong!" << endl;
+
+    return true;
 }
 
-void SaveFile(Node pl, string filename){
+void SaveFile(Node pl, string filename = "DataShoe.txt"){
     ofstream f(filename);
     if(!f.is_open()){
-        cout << ">> Loi: Khong mo duoc file de luu!" << endl << endl;
         return;
     }
 
@@ -661,397 +713,578 @@ void SaveFile(Node pl, string filename){
     }
 
     f.close();
-    cout << ">> Da luu toan bo du lieu vao file " << filename << " thanh cong!\n" << endl;
 }
 
 int main(){
-    //TextColor(15);
+    TextColor(15);
     cout << "====================================================================================================" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                           TRUONG DAI HOC BACH KHOA - DAI HOC DA NANG                           ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                    KHOA CONG NGHE THONG TIN                                    ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||------------------------------------------------------------------------------------------------||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                  PBL 2: DU AN CO SO LAP TRINH                                  ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                DE TAI: UNG DUNG QUAN LY BAN GIAY                               ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||------------------------------------------------------------------------------------------------||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                      GIANG VIEN HUONG DAN:                                     ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                     ThS. Nguyen Van Nguyen                                     ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                      TS. Nguyen Van Hieu                                       ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                                      SINH VIEN THUC HIEN:                                      ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||                                                                                                ||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                 Le Nguyen Hoang Viet       Lop: 25T_DT2         MSSV: 102250102                ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "||";
-    //TextColor(10);
+    TextColor(10);
     cout << "                 Nguyen Minh Tri            Lop: 25T_KHDL        MSSV: 102250375                ";
-    //TextColor(15);
+    TextColor(15);
     cout << "||" << endl;
     cout << "====================================================================================================" << endl << endl;
 
     Node ShoeList = Create();
 
-    //TextColor(11);
-    cout << "===== Ung dung quan ly ban giay =====" << endl << endl;
+    TextColor(12);
+    cout << "===== Ung dung quan ly ban giay =====" << endl;
         
     while(1){
+        TextColor(11);
         cout << "\n1. Them san pham moi." << endl;
         cout << "2. Hien thi toan bo san pham." << endl;
         cout << "3. Tim kiem san pham." << endl;
         cout << "4. Cap nhat thong tin san pham." << endl;
         cout << "5. Xoa san pham." << endl;
-        cout << "6. Xoa toan bo san pham." << endl;
-        cout << "7. Luu du lieu vao file." << endl;
+        cout << "6. Lam moi he thong." << endl;
         cout << "0. Thoat chuong trinh." << endl << endl;
+
+        TextColor(10);
         cout << ">> ";
         
-        int c;
-        cin >> c;
-        cin.ignore();
+        char C;
+        cin >> C;
+        cin.ignore(100, '\n');
 
-        switch (c){
-            case 1:{
-                cout << "\n1. Them san pham tu file." << endl;
-                cout << "2. Them san pham tu ban phim." << endl;
-                cout << "0. Quay lai." << endl << endl;
-                cout << ">> ";
-
-                int c;
-                cin >> c;
-                cin.ignore();
-
-                if(c == 0){
-                    break;
-                }
-
-                else if(c == 1){
-                    string f;
-                    cout << "Nhap ten file can doc: ";
-                    getline(cin, f);
-
-                    DocFile(ShoeList, f);
-                    break;
-                }
-
-                else if(c == 2){
-                    cout << "\nChon loai san pham muon them vao ung dung:" << endl;
-                    cout << "1. Giay the thao." << endl;
-                    cout << "2. Giay tay." << endl;
+        switch (C){
+            case '1':{
+                while(1){
+                    cout << "\n1. Them san pham tu file." << endl;
+                    cout << "2. Them san pham tu ban phim." << endl;
                     cout << "0. Quay lai." << endl << endl;
                     cout << ">> ";
 
-                    int type;
-                    cin >> type;
-                    cin.ignore();
-
-                    if(type == 0){
-                        break;
-                    }
-
-                    Shoe *s = nullptr;
-
-                    if(type == 1){
-                        s = new SportShoe();
-                    }
-
-                    else if(type == 2){
-                        s = new DressShoe();
-                    }
-
-                    else{
-                        cout << "Lua chon khong hop le! Vui long nhap lai." << endl << endl;
-                        break;
-                    }
-
-                    s->Add();
-                    Position p = FindById(ShoeList, s->GetId());
-                    if(p != nullptr){
-                        cout << ">> Loi: Ma giay " << s->GetId() << " da ton tai!" << endl;
-                        delete s;
-                    }
-
-                    else{
-                        Insert(ShoeList, s, nullptr);
-                        cout << ">> Them san pham moi thanh cong!" << endl << endl;
-                    }
-
-                    break;
-                }
-            }
-
-            case 2:{
-                cout << "\n1. Hien thi tat ca san pham." << endl;
-                cout << "2. Hien thi theo gia giam dan." << endl;
-                cout << "3. Hien thi theo gia tang dan." << endl;
-                cout << "4. Chi hien thi giay theo thao." << endl;
-                cout << "5. Chi hien thi giay tay." << endl;
-                cout << "0. Quay lai." << endl << endl;
-                cout << ">> ";
-
-                int c;
-                cin >> c;
-                cin.ignore();
-
-                if(c == 0){
-                    break;
-                }
-
-                ShowList(ShoeList, c);
-                
-                cout << "0. Quay lai menu." << endl << endl;
-                cout << ">> ";
-
-                int c1;
-                cin >> c1;
-                cin.ignore();
-
-                if(c1 == 0){
-                    break;
-                }
-
-                else{
-                    cout << "Lua chon khong hop le! Vui long nhap lai." << endl;
-                }
-
-                break;
-            }
-
-            case 3:{
-                cout << "\n1. Tim kiem theo ma giay." << endl;
-                cout << "2. Tim kiem theo ten giay." << endl;
-                cout << "0. Quay lai." << endl << endl;
-                cout << ">> ";
-
-                int c;
-                cin >> c;
-                cin.ignore();
-
-                if(c == 0){
-                    break;
-                }
-
-                if(c == 1){
-                    string id;
-                    cout << "Nhap ma giay can tim: ";
-                    getline(cin, id);
-
-                    Position p = FindById(ShoeList, id);
-                    if(p != nullptr){
-                        cout << "Thong tin san pham tim thay:" << endl;
-                        p->Info->Out();
-                    }
-
-                    else{
-                        cout << "Khong tim thay san pham co ma giay " << id << "!" << endl;
-                    }
-                }
-
-                else if(c == 2){
-                    string name;
-                    cout << "Nhap ten giay can tim: ";
-                    getline(cin, name);
-
-                    FindByName(ShoeList, name);
-                }
-
-                else{
-                    cout << "Lua chon khong hop le! Vui long nhap lai." << endl;
-                }
-
-                break;
-            }
-
-            case 4:{
-                    cout << "\nThong tin can cap nhat: " << endl;
-                    cout << "1. Cap nhat gia san pham." << endl;
-                    cout << "2. Cap nhat so luong san pham." << endl;
-                    cout << "0. Quay lai." << endl << endl;
-                    cout << ">> ";
-
-                    int c;
+                    char c;
                     cin >> c;
-                    cin.ignore();
+                    cin.ignore(100, '\n');
 
-                    if(c == 0){
+                    if(c != '0' && c != '1' && c != '2'){
+                        cout << ">> Lua chon khong hop le! Vui long nhap lai." << endl;
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
+
+                    else if(c == '0'){
                         break;
                     }
 
-                    cout << "Nhap ma giay cua san pham can cap nhat thong tin: ";
-                    string id;
-                    getline(cin, id);
+                    else if(c == '1'){
+                        string f;
+                        cout << "\n>> Nhap ten file can doc: ";
+                        getline(cin, f);
 
-                    Position p = FindById(ShoeList, id);
-                    if(p != nullptr){
-                        if(Update(p, c)){
-                            cout << "Thong tin san pham hien tai: " << endl;
-                            p->Info->Out();
-                        }
+                        DocFile(ShoeList, f);
+                        SaveFile(ShoeList);
+                        
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
                     }
 
-                    else{
-                        cout << "Khong tim thay san pham co ma giay " << id << "!" << endl;
+                    else if(c == '2'){
+                        while(1){
+                            cout << "\nChon loai san pham muon them vao ung dung:" << endl;
+                            cout << "1. Giay the thao." << endl;
+                            cout << "2. Giay tay." << endl;
+                            cout << "0. Quay lai." << endl << endl;
+                            cout << ">> ";
 
-                    break;
-                }
+                            char type;
+                            cin >> type;
+                            cin.ignore(100, '\n');
 
-                break;
-            }
+                            if(type != '0' && type != '1' && type != '2'){
+                                cout << ">> Lua chon khong hop le! Vui long nhap lai.";
+                                continue;
+                            }
 
-            case 5:{
-                cout << "\n1. Xoa nhieu san pham." << endl;
-                cout << "2. Xoa mot san pham." << endl;
-                cout << "0. Quay lai." << endl << endl;
-                cout << ">> ";
+                            if(type == '0'){
+                                break;
+                            }
 
-                int c;
-                cin >> c;
-                cin.ignore();
+                            Shoe *s = nullptr;
 
-                if(c == 0){
-                    break;
-                }
-                
-                if(c == 1){
-                    string FileName;
-                    cout << "Nhap ten file chua danh sach ma giay can xoa: ";
-                    getline(cin, FileName);
+                            if(type == '1'){
+                                s = new SportShoe();
+                            }
+
+                            else if(type == '2'){
+                                s = new DressShoe();
+                            }
+
+                            s->Add();
+                            Position p = FindById(ShoeList, s->GetId());
                     
-                    ifstream f(FileName);
-                    if(!f.is_open()){
-                        cout << ">> Loi: Khong mo duoc file " << FileName << "!" << endl;
-
-                        break;
-                    }
-                    
-                    else{
-                        string id;
-                        int count = 0;
-
-                        while(getline(f, id)){
-                            Position p = FindById(ShoeList, id);
-
                             if(p != nullptr){
-                                Remove(ShoeList, p);
-                                count++;
+                                cout << "\n>> Loi: Ma giay " << s->GetId() << " da ton tai!" << endl;
+                                delete s;
+
+                                cout << "\n>> Nhan Enter de tiep tuc...";
+                                cin.get();
                             }
 
                             else{
-                                cout << "Khong tim thay san pham co ma giay " << id << "!" << endl;
+                                Insert(ShoeList, s, nullptr);
+                                SaveFile(ShoeList);
+
+                                cout << "\n>> Them san pham moi thanh cong!" << endl;
+                                cout << ">> Nhan Enter de tiep tuc...";
+                                cin.get();
+
+                                continue ;
                             }
                         }
-
-                        f.close();
-                        cout << ">> Da xoa thanh cong " << count << " san pham!" << endl;
                     }
                 }
-                
-                else if(c == 2){
-                    cout << "Nhap ma giay cua san pham can xoa: ";
-                    string id;
-                    getline(cin, id);
 
-                    Position p = FindById(ShoeList, id);
-                    if(p != nullptr){
-                        Remove(ShoeList, p);
-                        cout << "Da xoa san pham thanh cong!" << endl;
+                break;
+            }
+
+            case '2':{
+                while(1){
+                    cout << "\n1. Hien thi tat ca san pham." << endl;
+                    cout << "2. Hien thi theo gia giam dan." << endl;
+                    cout << "3. Hien thi theo gia tang dan." << endl;
+                    cout << "4. Chi hien thi giay theo thao." << endl;
+                    cout << "5. Chi hien thi giay tay." << endl;
+                    cout << "0. Quay lai." << endl << endl;
+                    cout << ">> ";
+
+                    char c;
+                    cin >> c;
+                    cin.ignore(100, '\n');
+
+                    if(c != '0' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5'){
+                        cout << ">> Lua chon khong hop le! Vui long nhap lai." << endl;
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
+
+                    if(c == '0'){
+                        break;
+                    }
+
+                    if(ShoeList->Next == nullptr){
+                            cout << "\n>> Danh sach dang trong, vui long them thong tin san pham!" << endl;
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+                    
+                    else if(c == '1'){
+                        ShowList(ShoeList);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+                    }
+
+                    else if(c == '2'){
+                        ShoeList->Next = MergeSort(ShoeList->Next, Giam);
+                        ShoeList->Next->Prev = ShoeList;
+
+                        ShowList(ShoeList);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+                    }
+
+                    else if(c == '3'){
+                        ShoeList->Next = MergeSort(ShoeList->Next, Tang);
+                        ShoeList->Next->Prev = ShoeList;
+
+                        ShowList(ShoeList);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+                    }
+
+                    else if(c == '4'){
+                        ShowList(ShoeList, c);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+                    }
+
+                    else if(c == '5'){
+                        ShowList(ShoeList, c);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+                    }
+                }
+
+                break;
+            }
+
+            case '3':{
+                while(1){
+                    cout << "\n1. Tim kiem theo ma giay." << endl;
+                    cout << "2. Tim kiem theo ten giay." << endl;
+                    cout << "0. Quay lai." << endl << endl;
+                    cout << ">> ";
+
+                    char c;
+                    cin >> c;
+                    cin.ignore(100, '\n');
+
+                    if(c != '0' && c != '1' && c != '2'){
+                        cout << "Lua chon khong hop le! Vui long nhap lai.";
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
+
+                    if(c == '0'){
+                        break;
+                    }
+
+                    if(ShoeList->Next == nullptr){
+                        cout << "\n>> Danh sach dang trong, vui long them thong tin san pham!" << endl;
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
+
+                    if(c == '1'){
+                        string id;
+                        cout << "\n>> Nhap ma giay can tim: ";
+                        getline(cin, id);
+
+                        Position p = FindById(ShoeList, id);
+                    
+                        if(p != nullptr){
+                            cout << ">> Thong tin san pham tim thay:" << endl;
+                            p->Info->Out();
+
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+
+                        else{
+                            cout << ">> Khong tim thay san pham co ma giay " << id << "!" << endl;
+
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+                    }
+
+                    else if(c == '2'){
+                        string name;
+                        cout << "\n>> Nhap ten giay can tim: ";
+                        getline(cin, name);
+
+                        FindByName(ShoeList, name);
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
                     }
 
                     else{
-                        cout << "Khong tim thay san pham co ma " << id << "!" << endl;
+                        cout << "\n>> Lua chon khong hop le! Vui long nhap lai." << endl;
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
                     }
                 }
 
                 break;
             }
 
-            case 6:{
-                cout << "\nBan co chac muon xoa toan bo san pham? (Y/N): ";
-                char c;
-                cin >> c;
+            case '4':{
+                while(1){
+                    cout << "\n>> Nhap ma giay cua san pham can cap nhat thong tin (nhap 0 de quay lai): ";
+                    string id;
+                    getline(cin, id);
 
-                if(c == 'n' || c == 'N'){
-                    cout << "Da huy thao tac xoa toan bo san pham!" << endl << endl;
+                    if(id == "0"){
+                        break;
+                    }
 
-                    break;
+                    Position p = FindById(ShoeList, id);
+
+                    if(p != nullptr){
+                        while(1){
+                            cout << "\nThong tin can cap nhat:" << endl;
+                            cout << "1. Cap nhat ma san pham." << endl;
+                            cout << "2. Cap nhat ten san pham." << endl;
+                            cout << "3. Cap nhat hang san xuat." << endl;
+                            cout << "4. Cap nhat kich co giay." << endl;
+                            cout << "5. Cap nhat mau sac." << endl;
+                            cout << "6. Cap nhat gia san pham." << endl;
+                            cout << "7. Cap nhat so luong san pham." << endl;
+
+                            if(p->Info->GetType() == 1){
+                                cout << "8. Cap nhat mon the thao." << endl;
+                                cout << "9. Cap nhat cong nghe dem." << endl;
+                            }
+
+                            else if(p->Info->GetType() == 2){
+                                cout << "8. Cap nhat chat lieu da." << endl;
+                                cout << "9. Cap nhat kieu dang." << endl;
+                            }
+
+                            cout << "0. Hoan tat cap nhat." << endl << endl;
+                            cout << ">> ";
+
+                            char c;
+                            cin >> c;
+                            cin.ignore(100, '\n');
+
+                            if(c == '0'){
+                                cout << "\n>> Thong tin san pham hien tai:" << endl;
+                                p->Info->Out();
+
+                                cout << ">> Nhan Enter de tiep tuc...";
+                                cin.get();
+
+                                break;
+                            }
+
+                            Update(ShoeList, p, c);
+                            SaveFile(ShoeList);
+
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    else{
+                        cout << "\n>> Khong tim thay san pham co ma giay " << id << "!" << endl;
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
                 }
-
-                else if(c == 'y' || c == 'Y'){
-                    ClearList(ShoeList);
-                    cout << "Da xoa toan bo san pham!" << endl << endl;
-
-                    break;                    
-                }
-
-                else{
-                    cout << "Lua chon khong hop le! Vui long nhap lai." << endl << endl;
-
-                    break;
-                }
-            }
-
-            case 7:{
-                string f;
-
-                cout << "\nLuu du lieu vao file: ";
-                getline(cin, f);
-                SaveFile(ShoeList, f);
 
                 break;
             }
 
-            case 0:{
-                cout << "Cam on ban da su dung ung dung!" << endl << endl;
+            case '5':{
+                while(1){
+                    cout << "\n1. Xoa nhieu san pham." << endl;
+                    cout << "2. Xoa mot san pham." << endl;
+                    cout << "0. Quay lai." << endl << endl;
+                    cout << ">> ";
+
+                    char c;
+                    cin >> c;
+                    cin.ignore(100, '\n');
+
+                    if(c != '0' && c != '1' && c != '2'){
+                        cout << ">> Lua chon khong hop le! Vui long nhap lai." << endl;
+
+                        cout << ">> Nhan Enter de tiep tuc...";
+                        cin.get();
+
+                        continue;
+                    }
+
+                    if(c == '0'){
+                        break;
+                    }
+                
+                    if(c == '1'){
+                        string FileName;
+                        cout << "\n>> Nhap ten file chua danh sach ma giay can xoa: ";
+                        getline(cin, FileName);
+                    
+                        ifstream f(FileName);
+                    
+                        if(!f.is_open()){
+                            cout << "\n>> Loi: Khong mo duoc file " << FileName << "!" << endl;
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+                    
+                        else{
+                            string id;
+                            int count = 0;
+
+                            while(getline(f, id)){
+                                Position p = FindById(ShoeList, id);
+
+                                if(p != nullptr){
+                                    Remove(ShoeList, p);
+                                    count++;
+                                }
+
+                                else{
+                                    cout << "\n>> Khong tim thay san pham co ma giay " << id << "!" << endl;
+                                }
+                            }
+
+                            f.close();
+                            SaveFile(ShoeList);
+
+                            cout << "\n>> Da xoa thanh cong " << count << " san pham!" << endl;
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+                    }
+                
+                    else if(c == '2'){
+                        cout << "\n>> Nhap ma giay cua san pham can xoa: ";
+                        string id;
+                        getline(cin, id);
+
+                        Position p = FindById(ShoeList, id);
+                        if(p != nullptr){
+                            Remove(ShoeList, p);
+                            SaveFile(ShoeList);
+
+                            cout << "\n>> Da xoa san pham thanh cong!" << endl;
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+
+                        else{
+                            cout << "\n>> Khong tim thay san pham co ma " << id << "!" << endl;
+                            cout << ">> Nhan Enter de tiep tuc...";
+                            cin.get();
+
+                            continue;
+                        }
+                    }
+                }
+
+                break;
+            }
+
+            case '6':{
+                while(1){
+                    cout << "\n>> Xac nhan ban muon xoa toan bo san pham (Y/N): ";
+                    char c;
+                    cin >> c;
+                    cin.ignore(100, '\n');
+
+                    if(c == 'n' || c == 'N'){
+                        cout << ">> Da huy thao tac xoa toan bo san pham!" << endl;
+                        cout << ">> Nhan Enter de tiep tuc..." << endl << endl;
+                        cin.get();
+
+                        break;
+                    }
+
+                    else if(c == 'y' || c == 'Y'){
+                        ClearList(ShoeList);
+                        SaveFile(ShoeList);
+                        
+                        cout << ">> Da xoa toan bo san pham!" << endl;
+                        cout << ">> Nhan Enter de tiep tuc..." << endl << endl;
+                        cin.get();
+
+                        break;                    
+                    }
+
+                    else{
+                        cout << "\n>> Lua chon khong hop le! Vui long nhap lai." << endl;
+                        cout << ">> Nhan Enter de tiep tuc..." << endl << endl;
+                        cin.get();
+
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            case '0':{
+                cout << "\n>> Cam on ban da su dung ung dung!" << endl;
                 system("pause");
 
                 return 0;
             }
 
             default:
-                cout << "Lua chon khong hop le! Vui long nhap lai." << endl << endl;
+                cout << "\n>> Lua chon khong hop le! Vui long nhap lai." << endl;
+                cout << ">> Nhan Enter de tiep tuc..." << endl;
+                cin.get();
 
-                break;
+                continue;
         }
     }
 
