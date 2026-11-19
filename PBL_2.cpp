@@ -1105,7 +1105,7 @@ int main(){
                     cout << "1. Hien thi tat ca san pham." << endl;
                     cout << "2. Hien thi theo gia giam dan." << endl;
                     cout << "3. Hien thi theo gia tang dan." << endl;
-                    cout << "4. Chi hien thi giay theo thao." << endl;
+                    cout << "4. Chi hien thi giay the thao." << endl;
                     cout << "5. Chi hien thi giay tay." << endl;
                     cout << "0. Quay lai." << endl << endl;
                     cout << ">> ";
