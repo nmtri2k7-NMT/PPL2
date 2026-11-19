@@ -1295,7 +1295,7 @@ int main(){
                     cout << "\n------------------------------ CAP NHAT THONG TIN ------------------------------" << endl << endl;
 
                     TextColor(15);
-                    cout << ">> Nhap ma cua san pham can cap nhat thong tin (nhap 0 de quay lai): ";
+                    cout << ">> Nhap ma cua san pham can cap nhat thong tin (hoac nhap '0' de quay lai): ";
                     
                     string id;
                     TextColor(14);
